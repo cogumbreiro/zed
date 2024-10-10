@@ -394,7 +394,7 @@ pub trait File: Send + Sync {
     fn as_any(&self) -> &dyn Any;
 
     /// Converts this file into a protobuf message.
-    fn to_proto(&self, cx: &AppContext) -> rpc::proto::File;
+    fn to_proto(&self, cx: &AppContext) -> ::proto::File;
 
     /// Return whether Zed considers this to be a private file.
     fn is_private(&self) -> bool;
@@ -645,7 +645,7 @@ impl Buffer {
         let buffer = TextBuffer::new(replica_id, buffer_id, message.base_text);
         let mut this = Self::build(buffer, message.diff_base, file, capability);
         this.text.set_line_ending(proto::deserialize_line_ending(
-            rpc::proto::LineEnding::from_i32(message.line_ending)
+            ::proto::LineEnding::from_i32(message.line_ending)
                 .ok_or_else(|| anyhow!("missing line_ending"))?,
         ));
         this.saved_version = proto::deserialize_version(&message.saved_version);
@@ -4347,7 +4347,7 @@ impl File for TestFile {
         unimplemented!()
     }
 
-    fn to_proto(&self, _: &AppContext) -> rpc::proto::File {
+    fn to_proto(&self, _: &AppContext) -> ::proto::File {
         unimplemented!()
     }
 

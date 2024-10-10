@@ -4,7 +4,6 @@ use crate::{diagnostic_set::DiagnosticEntry, CursorShape, Diagnostic};
 use anyhow::{anyhow, Context as _, Result};
 use clock::ReplicaId;
 use lsp::{DiagnosticSeverity, LanguageServerId};
-use rpc::proto;
 use serde_json::Value;
 use std::{ops::Range, str::FromStr, sync::Arc};
 use text::*;

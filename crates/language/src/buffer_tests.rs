@@ -1,3 +1,4 @@
+use super::proto::deserialize_operation;
 use super::*;
 use crate::language_settings::{
     AllLanguageSettings, AllLanguageSettingsContent, LanguageSettingsContent,
@@ -10,7 +11,6 @@ use git::diff::assert_hunks;
 use gpui::{AppContext, BorrowAppContext, Model};
 use gpui::{Context, TestAppContext};
 use indoc::indoc;
-use proto::deserialize_operation;
 use rand::prelude::*;
 use regex::RegexBuilder;
 use settings::SettingsStore;

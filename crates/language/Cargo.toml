@@ -41,10 +41,10 @@ log.workspace = true
 lsp.workspace = true
 parking_lot.workspace = true
 postage.workspace = true
+proto.workspace = true
 pulldown-cmark.workspace = true
 rand = { workspace = true, optional = true }
 regex.workspace = true
-rpc.workspace = true
 schemars.workspace = true
 serde.workspace = true
 serde_json.workspace = true
