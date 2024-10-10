@@ -13,7 +13,7 @@ path = "src/channel.rs"
 doctest = false
 
 [features]
-test-support = ["collections/test-support", "gpui/test-support", "rpc/test-support"]
+test-support = ["collections/test-support", "gpui/test-support"]
 
 [dependencies]
 anyhow.workspace = true
@@ -26,7 +26,7 @@ language.workspace = true
 log.workspace = true
 rand.workspace = true
 release_channel.workspace = true
-rpc.workspace = true
+proto.workspace = true
 settings.workspace = true
 sum_tree.workspace = true
 text.workspace = true
@@ -36,7 +36,6 @@ util.workspace = true
 [dev-dependencies]
 collections = { workspace = true, features = ["test-support"] }
 gpui = { workspace = true, features = ["test-support"] }
-rpc = { workspace = true, features = ["test-support"] }
 client = { workspace = true, features = ["test-support"] }
 settings = { workspace = true, features = ["test-support"] }
 util = { workspace = true, features = ["test-support"] }

@@ -21,7 +21,7 @@ use language::{
     },
     Buffer, BufferEvent, Capability, File as _, Language, Operation,
 };
-use rpc::{proto, AnyProtoClient, ErrorExt as _, TypedEnvelope};
+use rpc::proto::{self, proto_client::AnyProtoClient, ErrorExt as _, TypedEnvelope};
 use smol::channel::Receiver;
 use std::{io, path::Path, str::FromStr as _, sync::Arc, time::Instant};
 use text::BufferId;

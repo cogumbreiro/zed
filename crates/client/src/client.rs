@@ -22,9 +22,12 @@ use gpui::{actions, AppContext, AsyncAppContext, Global, Model, Task, WeakModel}
 use http_client::{AsyncBody, HttpClient, HttpClientWithUrl};
 use parking_lot::RwLock;
 use postage::watch;
+use proto::{
+    proto_client::{AnyProtoClient, EntityMessageSubscriber, ProtoClient, ProtoMessageHandlerSet},
+    AnyTypedEnvelope, EnvelopedMessage, PeerId, RequestMessage,
+};
 use rand::prelude::*;
 use release_channel::{AppVersion, ReleaseChannel};
-use rpc::proto::{AnyTypedEnvelope, EnvelopedMessage, PeerId, RequestMessage};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use settings::{Settings, SettingsSources};

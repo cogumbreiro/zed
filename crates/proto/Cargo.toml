@@ -18,6 +18,9 @@ doctest = false
 
 [dependencies]
 anyhow.workspace = true
+gpui.workspace = true
+futures.workspace = true
+parking_lot.workspace = true
 collections.workspace = true
 prost.workspace = true
 serde.workspace = true

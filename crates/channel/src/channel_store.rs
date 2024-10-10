@@ -11,10 +11,7 @@ use gpui::{
     Task, WeakModel,
 };
 use language::Capability;
-use rpc::{
-    proto::{self, ChannelRole, ChannelVisibility},
-    TypedEnvelope,
-};
+use proto::{self, ChannelRole, ChannelVisibility, TypedEnvelope};
 use settings::Settings;
 use std::{mem, sync::Arc, time::Duration};
 use util::{maybe, ResultExt};

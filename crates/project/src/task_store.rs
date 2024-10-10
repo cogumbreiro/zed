@@ -9,7 +9,7 @@ use language::{
     proto::{deserialize_anchor, serialize_anchor},
     ContextProvider as _, Location,
 };
-use rpc::{proto, AnyProtoClient, TypedEnvelope};
+use rpc::proto::{self, proto_client::AnyProtoClient, TypedEnvelope};
 use settings::{watch_config_file, SettingsLocation};
 use task::{TaskContext, TaskVariables, VariableName};
 use text::BufferId;

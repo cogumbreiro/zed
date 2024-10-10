@@ -22,8 +22,14 @@ use gpui::{
 };
 use parking_lot::Mutex;
 use rpc::{
-    proto::{self, build_typed_envelope, Envelope, EnvelopedMessage, PeerId, RequestMessage},
-    AnyProtoClient, EntityMessageSubscriber, ProtoClient, ProtoMessageHandlerSet, RpcError,
+    proto::{
+        self, build_typed_envelope,
+        proto_client::{
+            AnyProtoClient, EntityMessageSubscriber, ProtoClient, ProtoMessageHandlerSet,
+        },
+        Envelope, EnvelopedMessage, PeerId, RequestMessage,
+    },
+    RpcError,
 };
 use smol::{
     fs,

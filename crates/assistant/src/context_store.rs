@@ -3,7 +3,7 @@ use crate::{
     SavedContext, SavedContextMetadata,
 };
 use anyhow::{anyhow, Context as _, Result};
-use client::{proto, telemetry::Telemetry, Client, TypedEnvelope};
+use client::{telemetry::Telemetry, Client, TypedEnvelope};
 use clock::ReplicaId;
 use fs::Fs;
 use futures::StreamExt;
@@ -14,8 +14,8 @@ use gpui::{
 use language::LanguageRegistry;
 use paths::contexts_dir;
 use project::Project;
+use proto::{self, proto_client::AnyProtoClient};
 use regex::Regex;
-use rpc::AnyProtoClient;
 use std::{
     cmp::Reverse,
     ffi::OsStr,

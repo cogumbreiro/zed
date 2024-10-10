@@ -36,7 +36,7 @@ use postage::{
     prelude::{Sink as _, Stream as _},
     watch,
 };
-use rpc::{proto, AnyProtoClient};
+use proto::{self, proto_client::AnyProtoClient};
 pub use settings::WorktreeId;
 use settings::{Settings, SettingsLocation, SettingsStore};
 use smallvec::{smallvec, SmallVec};
@@ -3104,8 +3104,8 @@ impl language::File for File {
         self
     }
 
-    fn to_proto(&self, cx: &AppContext) -> rpc::proto::File {
-        rpc::proto::File {
+    fn to_proto(&self, cx: &AppContext) -> proto::File {
+        proto::File {
             worktree_id: self.worktree.read(cx).id().to_proto(),
             entry_id: self.entry_id.map(|id| id.to_proto()),
             path: self.path.to_string_lossy().into(),
@@ -3152,7 +3152,7 @@ impl File {
     }
 
     pub fn from_proto(
-        proto: rpc::proto::File,
+        proto: proto::File,
         worktree: Model<Worktree>,
         cx: &AppContext,
     ) -> Result<Self> {

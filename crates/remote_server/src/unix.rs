@@ -4,13 +4,13 @@ use fs::RealFs;
 use futures::channel::mpsc;
 use futures::{select, select_biased, AsyncRead, AsyncWrite, FutureExt, SinkExt};
 use gpui::{AppContext, Context as _};
+use proto::Envelope;
 use remote::proxy::ProxyLaunchError;
 use remote::ssh_session::ChannelClient;
 use remote::{
     json_log::LogRecord,
     protocol::{read_message, write_message},
 };
-use rpc::proto::Envelope;
 use smol::Async;
 use smol::{io::AsyncWriteExt, net::unix::UnixListener, stream::StreamExt as _};
 use std::{

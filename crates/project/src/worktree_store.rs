@@ -16,10 +16,7 @@ use gpui::{
     AppContext, AsyncAppContext, EntityId, EventEmitter, Model, ModelContext, Task, WeakModel,
 };
 use postage::oneshot;
-use rpc::{
-    proto::{self, SSH_PROJECT_ID},
-    AnyProtoClient, ErrorExt, TypedEnvelope,
-};
+use rpc::proto::{self, proto_client::AnyProtoClient, ErrorExt, TypedEnvelope, SSH_PROJECT_ID};
 use smol::{
     channel::{Receiver, Sender},
     stream::StreamExt,

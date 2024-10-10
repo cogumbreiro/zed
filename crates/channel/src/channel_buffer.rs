@@ -4,10 +4,7 @@ use client::{ChannelId, Client, Collaborator, UserStore, ZED_ALWAYS_ACTIVE};
 use collections::HashMap;
 use gpui::{AppContext, AsyncAppContext, Context, EventEmitter, Model, ModelContext, Task};
 use language::proto::serialize_version;
-use rpc::{
-    proto::{self, PeerId},
-    AnyProtoClient, TypedEnvelope,
-};
+use proto::{self, proto_client::AnyProtoClient, PeerId, TypedEnvelope};
 use std::{sync::Arc, time::Duration};
 use text::BufferId;
 use util::ResultExt;

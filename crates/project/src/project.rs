@@ -59,7 +59,7 @@ use parking_lot::{Mutex, RwLock};
 pub use prettier_store::PrettierStore;
 use project_settings::{ProjectSettings, SettingsObserver, SettingsObserverEvent};
 use remote::{SshConnectionOptions, SshRemoteClient};
-use rpc::{proto::SSH_PROJECT_ID, AnyProtoClient, ErrorCode};
+use rpc::proto::{proto_client::AnyProtoClient, ErrorCode, SSH_PROJECT_ID};
 use search::{SearchInputKind, SearchQuery, SearchResult};
 use search_history::SearchHistory;
 use settings::{InvalidSettingsError, Settings, SettingsLocation, SettingsStore};

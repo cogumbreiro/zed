@@ -2,6 +2,7 @@
 
 pub mod error;
 mod macros;
+pub mod proto_client;
 mod typed_envelope;
 
 pub use error::*;

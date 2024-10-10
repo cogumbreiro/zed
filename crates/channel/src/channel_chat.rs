@@ -10,8 +10,8 @@ use futures::lock::Mutex;
 use gpui::{
     AppContext, AsyncAppContext, Context, EventEmitter, Model, ModelContext, Task, WeakModel,
 };
+use proto::proto_client::AnyProtoClient;
 use rand::prelude::*;
-use rpc::AnyProtoClient;
 use std::{
     ops::{ControlFlow, Range},
     sync::Arc,

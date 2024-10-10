@@ -7,7 +7,7 @@ use paths::{
     local_settings_file_relative_path, local_tasks_file_relative_path,
     local_vscode_tasks_file_relative_path,
 };
-use rpc::{proto, AnyProtoClient, TypedEnvelope};
+use rpc::proto::{self, proto_client::AnyProtoClient, TypedEnvelope};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use settings::{

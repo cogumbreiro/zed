@@ -1,7 +1,7 @@
 use crate::Channel;
 use client::ChannelId;
 use collections::BTreeMap;
-use rpc::proto;
+use proto;
 use std::sync::Arc;
 
 #[derive(Default, Debug)]

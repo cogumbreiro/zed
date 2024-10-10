@@ -11,17 +11,17 @@ use project::{
     worktree_store::WorktreeStore,
     LspStore, LspStoreEvent, PrettierStore, ProjectPath, WorktreeId,
 };
-use remote::ssh_session::ChannelClient;
-use rpc::{
-    proto::{self, SSH_PEER_ID, SSH_PROJECT_ID},
-    AnyProtoClient, TypedEnvelope,
+use proto::{
+    self, proto_client::AnyProtoClient, ErrorCodeExt as _, TypedEnvelope, SSH_PEER_ID,
+    SSH_PROJECT_ID,
 };
+use remote::ssh_session::ChannelClient;
 use smol::stream::StreamExt;
 use std::{
     path::{Path, PathBuf},
     sync::{atomic::AtomicUsize, Arc},
 };
-use util::ResultExt;
+use util::ResultExt as _;
 use worktree::Worktree;
 
 pub struct HeadlessProject {
@@ -210,7 +210,6 @@ impl HeadlessProject {
         message: TypedEnvelope<proto::AddWorktree>,
         mut cx: AsyncAppContext,
     ) -> Result<proto::AddWorktreeResponse> {
-        use client::ErrorCodeExt;
         let path = shellexpand::tilde(&message.payload.path).to_string();
 
         let fs = this.read_with(&mut cx, |this, _| this.fs.clone())?;
