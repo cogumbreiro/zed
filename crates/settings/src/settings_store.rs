@@ -18,7 +18,7 @@ use std::{
 use tree_sitter::Query;
 use util::{merge_non_null_json_value_into, RangeExt, ResultExt as _};
 
-use crate::{SettingsJsonSchemaParams, WorktreeId};
+use crate::{editorconfig::Editorconfig, SettingsJsonSchemaParams, WorktreeId};
 
 /// A value that can be defined as a user setting.
 ///
@@ -164,7 +164,7 @@ pub struct SettingsStore {
     raw_user_settings: serde_json::Value,
     raw_extension_settings: serde_json::Value,
     raw_local_settings: BTreeMap<(WorktreeId, Arc<Path>), serde_json::Value>,
-    raw_editorconfig_settings: BTreeMap<(WorktreeId, Arc<Path>), String>,
+    raw_editorconfig_settings: BTreeMap<(WorktreeId, Arc<Path>), (String, Option<Editorconfig>)>,
     tab_size_callback: Option<(
         TypeId,
         Box<dyn Fn(&dyn Any) -> Option<usize> + Send + Sync + 'static>,
@@ -221,7 +221,7 @@ impl SettingsStore {
             raw_user_settings: serde_json::json!({}),
             raw_extension_settings: serde_json::json!({}),
             raw_local_settings: Default::default(),
-            raw_editorconfig_settings: Default::default(),
+            raw_editorconfig_settings: BTreeMap::default(),
             tab_size_callback: Default::default(),
             setting_file_updates_tx,
             _setting_file_updates: cx.spawn(|cx| async move {
@@ -580,12 +580,18 @@ impl SettingsStore {
                     .entry((root_id, directory_path.clone()))
                 {
                     btree_map::Entry::Vacant(v) => {
-                        v.insert(editorconfig_contents.to_owned());
+                        v.insert((
+                            editorconfig_contents.to_owned(),
+                            editorconfig_contents.parse().log_err(),
+                        ));
                         editorconfig_settings_changed = true;
                     }
                     btree_map::Entry::Occupied(mut o) => {
-                        if o.get() != editorconfig_contents {
-                            o.insert(editorconfig_contents.to_owned());
+                        if o.get().0 != editorconfig_contents {
+                            o.insert((
+                                editorconfig_contents.to_owned(),
+                                editorconfig_contents.parse().log_err(),
+                            ));
                             editorconfig_settings_changed = true;
                         }
                     }
@@ -597,7 +603,7 @@ impl SettingsStore {
             self.recompute_values(Some((root_id, &directory_path)), cx)?;
         }
         if editorconfig_settings_changed {
-            self.recompute_editorconfig_values((root_id, &directory_path), cx)?;
+            self.recompute_editorconfig_values(root_id, cx)?;
         }
 
         Ok(())
@@ -641,7 +647,7 @@ impl SettingsStore {
     pub fn local_editorconfig_settings(
         &self,
         root_id: WorktreeId,
-    ) -> impl '_ + Iterator<Item = (Arc<Path>, String)> {
+    ) -> impl '_ + Iterator<Item = (Arc<Path>, String, Option<Editorconfig>)> {
         self.raw_editorconfig_settings
             .range(
                 (root_id, Path::new("").into())
@@ -650,7 +656,9 @@ impl SettingsStore {
                         Path::new("").into(),
                     ),
             )
-            .map(|((_, path), content)| (path.clone(), content.clone()))
+            .map(|((_, path), (content, parsed_content))| {
+                (path.clone(), content.clone(), parsed_content.clone())
+            })
     }
 
     pub fn json_schema(
@@ -879,10 +887,35 @@ impl SettingsStore {
 
     fn recompute_editorconfig_values(
         &self,
-        directory_of_item_changed: (WorktreeId, &Path),
+        for_worktree: WorktreeId,
         cx: &mut AppContext,
     ) -> Result<()> {
-        todo!("TODO kb sync editorconfig settings")
+        let parsed_editorconfigs = self
+            .local_editorconfig_settings(for_worktree)
+            .map(|(editorconfig_path, _, parsed_editorconfig)| {
+                Ok((
+                    editorconfig_path,
+                    parsed_editorconfig.context("editorconfig is not parsed successfully")?,
+                ))
+            })
+            .collect::<anyhow::Result<Vec<_>>>()
+            .context("reloading worktree editorconfig settings")?;
+        if parsed_editorconfigs.is_empty() {
+            return Ok(());
+        }
+
+        let mut merged_editorconfigs = Vec::with_capacity(parsed_editorconfigs.len());
+        for (path, mut editorconfig) in parsed_editorconfigs {
+            if !editorconfig.is_root() {
+                if let Some((_, parent_editorconfig)) = merged_editorconfigs.last() {
+                    editorconfig.merge_with(parent_editorconfig);
+                }
+            }
+            merged_editorconfigs.push((path, editorconfig));
+        }
+
+        todo!("TODO kb call someone to accept the newly merged sequence");
+        Ok(())
     }
 }
 
